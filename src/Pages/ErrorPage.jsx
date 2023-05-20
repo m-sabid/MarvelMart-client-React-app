@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
+import useDynamicTitle from "../components/shared/useDynamicTitle";
 
 
 
 const ErrorPage = () => {
+	useDynamicTitle("404");
     return (
 <section>
 

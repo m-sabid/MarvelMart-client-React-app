@@ -6,8 +6,10 @@ import TopNav from "../components/shared/TopNav";
 import Spinner from "../Components/Shared/Spinner";
 import { AuthContext } from "../providers/AuthProvider";
 import Footer from "../components/shared/Footer";
+import useDynamicTitle from "../components/shared/useDynamicTitle";
 
 const SignupPage = () => {
+  useDynamicTitle("Signup");
   const { createUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
 

@@ -12,8 +12,10 @@ import { AuthContext } from "../providers/AuthProvider";
 import TopNav from "../components/shared/TopNav";
 import Spinner from "../Components/Shared/Spinner";
 import Footer from "../components/shared/Footer";
+import useDynamicTitle from "../components/shared/useDynamicTitle";
 
 const LoginPage = () => {
+  useDynamicTitle("Add Toy");
   const { loginUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
