@@ -11,14 +11,14 @@ const AddToyPage = () => {
 
   const navigate = useNavigate();
   const [toy, setToy] = useState({
-    seller: "",
-    name: "",
+    seller: user.displayName,
+    toyName: "",
     subCategory: "",
     price: "",
     quantity: "",
     descriptions: "",
-    photoURL: "", // New field: photoURL
-    email: "", // New field: email
+    photoURL: "",
+    sellerEmail: user.email,
   });
 
   const handleInputChange = (event) => {
@@ -55,7 +55,7 @@ const AddToyPage = () => {
               type="text"
               id="seller"
               name="seller"
-              value={user.displayName}
+              value={toy.seller}
               onChange={handleInputChange}
               placeholder="Enter seller name"
               required
@@ -71,7 +71,7 @@ const AddToyPage = () => {
               type="email"
               id="email"
               name="email"
-              value={user.email}
+              value={toy.email}
               onChange={handleInputChange}
               placeholder="Enter email"
               required
