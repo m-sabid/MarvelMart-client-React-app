@@ -21,47 +21,75 @@ const githubProvider = new GithubAuthProvider();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [loginRedirectPath, setLoginRedirectPath] = useState(null);
 
   // Create User with Firebase
   const createUserFirebase = async (email, password, displayName, photoUrl) => {
     setLoading(true);
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    return await updateProfile(userCredential.user, {
-      displayName,
-      photoURL: photoUrl,
-    });
-  };
-
-
-// Login with Firebase
-const loginFirebase = (email, password, navigate) => {
-  setLoading(true);
-  return signInWithEmailAndPassword(auth, email, password)
-    .then(() => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      await updateProfile(userCredential.user, {
+        displayName,
+        photoURL: photoUrl,
+      });
       setLoading(false);
-      navigate("/desired-route"); // Replace "/desired-route" with your desired location
-    })
-    .catch((error) => {
+      setUser(userCredential.user);
+    } catch (error) {
       setLoading(false);
       throw error;
-    });
-};
+    }
+  };
 
+  // Login with Firebase
+  const loginFirebase = (email, password, navigate) => {
+    setLoading(true);
+    return signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        setLoading(false);
+        setUser(userCredential.user);
+        if (loginRedirectPath) {
+          navigate(loginRedirectPath);
+          setLoginRedirectPath(null);
+        } else {
+          navigate("/desired-route"); // Replace "/desired-route" with your desired location
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        throw error;
+      });
+  };
 
   // Login with Google
   const loginWithGoogle = () => {
     setLoading(true);
-    return signInWithPopup(auth, googleProvider);
+    return signInWithPopup(auth, googleProvider)
+      .then((userCredential) => {
+        setLoading(false);
+        setUser(userCredential.user);
+      })
+      .catch((error) => {
+        setLoading(false);
+        throw error;
+      });
   };
 
   // Login with GitHub
   const loginWithGithub = () => {
     setLoading(true);
-    return signInWithPopup(auth, githubProvider);
+    return signInWithPopup(auth, githubProvider)
+      .then((userCredential) => {
+        setLoading(false);
+        setUser(userCredential.user);
+      })
+      .catch((error) => {
+        setLoading(false);
+        throw error;
+      });
   };
 
   // User Signed in or not
@@ -78,7 +106,15 @@ const loginFirebase = (email, password, navigate) => {
   // Logout
   const logout = () => {
     setLoading(true);
-    return signOut(auth);
+    return signOut(auth)
+      .then(() => {
+        setLoading(false);
+        setUser(null);
+      })
+      .catch((error) => {
+        setLoading(false);
+        throw error;
+      });
   };
 
   const authInfo = {
@@ -89,6 +125,8 @@ const loginFirebase = (email, password, navigate) => {
     loginWithGithub,
     logout,
     loading,
+    loginRedirectPath,
+    setLoginRedirectPath,
   };
 
   return (

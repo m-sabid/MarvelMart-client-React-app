@@ -7,6 +7,7 @@ import MyToysPage from "../Pages/MyToysPage";
 import PrivetRoute from "./PrivetRoute";
 import AllToyPage from "../Pages/AllToyPage";
 import BlogPage from "../Pages/BlogPage";
+import ToyDetailPage from "../Pages/ToyDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,16 @@ const router = createBrowserRouter([
     path: "/blog",
     element: <BlogPage />,
     children: [],
+  },
+  {
+    path: "/toys/:toyId",
+    element: (
+      <PrivetRoute>
+        <ToyDetailPage />
+      </PrivetRoute>
+    ),
+    loader: ({ params }) =>
+      fetch(`https://cookpad-server.vercel.app/api/recipes/${params.id}`),
   },
 ]);
 //   {

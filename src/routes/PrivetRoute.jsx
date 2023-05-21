@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import Spinner from "../Components/Shared/Spinner";
 import { AuthContext } from "../providers/AuthProvider";
 
 const PrivetRoute = ({ children }) => {
-  const { user, loading, loginRedirectPath, setLoginRedirectPath } = useContext(AuthContext);
+  const { user, loading, setLoginRedirectPath } = useContext(AuthContext);
 
   const location = useLocation();
 

@@ -24,7 +24,6 @@ const LoginPage = () => {
 
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
-  const gitProvider = new GithubAuthProvider();
 
   const signInWithGoogle = async () => {
     try {
@@ -35,14 +34,6 @@ const LoginPage = () => {
     }
   };
 
-  const signInWithGithub = async () => {
-    try {
-      await signInWithPopup(auth, gitProvider);
-      navigate(from, { replace: true });
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleForm = (e) => {
     e.preventDefault();
@@ -138,13 +129,7 @@ const LoginPage = () => {
               <FaGoogle className="mr-2" />
               Sign in with Google
             </button>
-            <button
-              onClick={signInWithGithub}
-              className="flex items-center justify-center w-full py-3 rounded-md text-white bg-neutral1 hover:bg-neutral2"
-            >
-              <FaGithub className="mr-2" />
-              Sign in with GitHub
-            </button>
+            
             <div className="flex items-center justify-center">
               <span className="text-neutral1 text-sm">
                 Don't have an account?
