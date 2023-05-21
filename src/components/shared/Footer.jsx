@@ -82,6 +82,10 @@ const Footer = () => {
           </div>
         </div>
       </div>
+      <hr />
+      <p className="text-center mx-auto">
+        © [2023] <strong> MarvelMart. </strong> All rights reserved.
+      </p>
     </footer>
   );
 };

@@ -24,7 +24,7 @@ const AuthProvider = ({ children }) => {
   const [loginRedirectPath, setLoginRedirectPath] = useState(null);
 
   // Create User with Firebase
-  const createUserFirebase = async (email, password, displayName, photoUrl) => {
+  const createUser = async (email, password, displayName, photoUrl) => {
     setLoading(true);
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -45,7 +45,7 @@ const AuthProvider = ({ children }) => {
   };
 
   // Login with Firebase
-  const loginFirebase = (email, password, navigate) => {
+  const login = async (email, password, navigate) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -65,23 +65,9 @@ const AuthProvider = ({ children }) => {
   };
 
   // Login with Google
-  const loginWithGoogle = () => {
+  const loginWithGoogle = async () => {
     setLoading(true);
     return signInWithPopup(auth, googleProvider)
-      .then((userCredential) => {
-        setLoading(false);
-        setUser(userCredential.user);
-      })
-      .catch((error) => {
-        setLoading(false);
-        throw error;
-      });
-  };
-
-  // Login with GitHub
-  const loginWithGithub = () => {
-    setLoading(true);
-    return signInWithPopup(auth, githubProvider)
       .then((userCredential) => {
         setLoading(false);
         setUser(userCredential.user);
@@ -104,9 +90,9 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   // Logout
-  const logout = () => {
+  const logout = async () => {
     setLoading(true);
-    return signOut(auth)
+    return await signOut(auth)
       .then(() => {
         setLoading(false);
         setUser(null);
@@ -119,10 +105,9 @@ const AuthProvider = ({ children }) => {
 
   const authInfo = {
     user,
-    createUserFirebase,
-    loginFirebase,
+    createUser,
+    login,
     loginWithGoogle,
-    loginWithGithub,
     logout,
     loading,
     loginRedirectPath,

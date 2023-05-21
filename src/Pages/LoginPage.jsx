@@ -1,13 +1,8 @@
 import React, { useContext, useState } from "react";
-import {
-  getAuth,
-  GoogleAuthProvider,
-  GithubAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineMail, AiOutlineLock } from "react-icons/ai";
-import { FaGoogle, FaGithub } from "react-icons/fa";
+import { FaGoogle } from "react-icons/fa";
 import { AuthContext } from "../providers/AuthProvider";
 import TopNav from "../components/shared/TopNav";
 import Spinner from "../Components/Shared/Spinner";
@@ -15,9 +10,10 @@ import Footer from "../components/shared/Footer";
 import useDynamicTitle from "../components/shared/useDynamicTitle";
 
 const LoginPage = () => {
-  useDynamicTitle("Add Toy");
-  const { loginUser } = useContext(AuthContext);
+  useDynamicTitle("Login Page");
+  const { login } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
@@ -34,7 +30,6 @@ const LoginPage = () => {
     }
   };
 
-
   const handleForm = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -42,7 +37,19 @@ const LoginPage = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    loginUser(email, password, navigate)
+    if (!email || !password) {
+      setErrorMessage("Email and password are required.");
+      setLoading(false);
+      return;
+    }
+
+    if (password.length < 6) {
+      setErrorMessage("Password must be at least 6 characters long.");
+      setLoading(false);
+      return;
+    }
+
+    login(email, password, navigate)
       .then(() => {
         setLoading(false);
         form.reset();
@@ -50,8 +57,10 @@ const LoginPage = () => {
       })
       .catch((error) => {
         const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(error);
+        const errorMessage = "Please enter a valid email and password.";
+        setErrorMessage(errorMessage);
+        setLoading(false);
+        console.log("error", errorMessage);
       });
   };
 
@@ -66,6 +75,9 @@ const LoginPage = () => {
               <Spinner className="mx-auto" />
             </div>
           ) : null}
+          {errorMessage && (
+            <p className="text-red-500 text-sm">{errorMessage}</p>
+          )}
           <form onSubmit={handleForm}>
             <div className="mb-4">
               <label
@@ -114,6 +126,7 @@ const LoginPage = () => {
                   type="submit"
                   name="submit"
                   id="submit"
+                  value="Login"
                 />
               </div>
             </div>
@@ -129,7 +142,7 @@ const LoginPage = () => {
               <FaGoogle className="mr-2" />
               Sign in with Google
             </button>
-            
+
             <div className="flex items-center justify-center">
               <span className="text-neutral1 text-sm">
                 Don't have an account?

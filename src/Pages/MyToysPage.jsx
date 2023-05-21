@@ -70,38 +70,39 @@ const MyToysPage = () => {
     setIsUpdateModalOpen(true);
   };
 
+  //  Handel Update
   // ...
-  const handleUpdateSubmit = (e) => {
+
+  // Handel Update
+  const handleUpdateSubmit = async (e) => {
     e.preventDefault();
+
     const updatedToy = {
       price: updatePrice,
       descriptions: updateDescriptions,
       quantity: updateAvailableQuantity,
     };
-  
-    axios
-      .patch(`http://localhost:5000/api/toys/${updateToyId}`, updatedToy)
-      .then((response) => {
-        setToys((prevToys) => {
-          return prevToys.map((toy) => {
-            if (toy._id === updateToyId) {
-              return { ...toy, ...response.data.toy };
-            }
-            return toy;
-          });
-        });
-        setIsUpdateModalOpen(false);
-        toast.success("Toy updated successfully");
-      })
-      .catch((error) => {
-        console.error("Error updating toy:", error);
-        setIsUpdateModalOpen(false);
-      });
+
+    try {
+      await axios.patch(
+        `http://localhost:5000/api/toys/${updateToyId}`,
+        updatedToy
+      );
+
+      // Update the toys state with the updated toy
+      setToys((prevToys) =>
+        prevToys.map((toy) =>
+          toy._id === updateToyId ? { ...toy, ...updatedToy } : toy
+        )
+      );
+
+      setIsUpdateModalOpen(false);
+      toast.success("Toy updated successfully");
+    } catch (error) {
+      console.error("Error updating toy:", error);
+      setIsUpdateModalOpen(false);
+    }
   };
-  
-
-// ...
-
 
   return (
     <>
@@ -128,12 +129,14 @@ const MyToysPage = () => {
             </thead>
             <tbody>
               {toys.map((toy) => (
-                <tr key={toy._id}>
+                <tr key={toy._id} className="text-center">
                   <td className="px-4 py-2 border-b">{toy.seller}</td>
                   <td className="px-4 py-2 border-b">{toy.toyName}</td>
                   <td className="px-4 py-2 border-b">{toy.price}</td>
                   <td className="px-4 py-2 border-b">{toy.quantity}</td>
-                  <td className="px-4 py-2 border-b">{toy.descriptions}</td>
+                  <td className="px-4 py-2 border-b">
+                    {toy.descriptions.slice(0, 10)}
+                  </td>
                   <td className="px-4 py-2 border-b">
                     <button
                       className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mr-2"
@@ -221,9 +224,7 @@ const MyToysPage = () => {
                     type="number"
                     id="quantity"
                     value={updateAvailableQuantity}
-                    onChange={(e) =>
-                      setUpdateAvailableQuantity(e.target.value)
-                    }
+                    onChange={(e) => setUpdateAvailableQuantity(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded"
                   />
                 </div>

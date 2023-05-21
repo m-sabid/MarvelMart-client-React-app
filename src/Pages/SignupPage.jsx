@@ -1,5 +1,6 @@
 import { IconContext } from "react-icons";
 import { AiOutlineMail, AiOutlineLink, AiOutlineLock } from "react-icons/ai";
+import { RiEyeFill, RiEyeCloseFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import TopNav from "../components/shared/TopNav";
@@ -7,13 +8,39 @@ import Spinner from "../Components/Shared/Spinner";
 import { AuthContext } from "../providers/AuthProvider";
 import Footer from "../components/shared/Footer";
 import useDynamicTitle from "../components/shared/useDynamicTitle";
+import { ToastContainer, toast } from "react-toastify";
 
 const SignupPage = () => {
   useDynamicTitle("Signup");
-  const { createUserFirebase } = useContext(AuthContext);
+  const { createUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({
+    displayName: "",
+    email: "",
+    password: "",
+    photoUrl: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handelSignUp = async (event) => {
+  const validateEmail = (email) => {
+    // Regular expression for email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = (password) => {
+    // Regular expression for password validation (at least 6 characters, with a number and special character)
+    const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{6,}$/;
+    return passwordRegex.test(password);
+  };
+
+  const validatePhotoUrl = (photoUrl) => {
+    // Regular expression for URL validation
+    const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+    return urlRegex.test(photoUrl);
+  };
+
+  const handleSignUp = async (event) => {
     event.preventDefault();
     setLoading(true);
     const form = event.target;
@@ -22,14 +49,67 @@ const SignupPage = () => {
     const password = form.password.value;
     const photoUrl = form.photoUrl.value;
 
+    // Reset errors
+    setErrors({
+      displayName: "",
+      email: "",
+      password: "",
+      photoUrl: "",
+    });
+
+    let hasError = false;
+
+    // Validation
+    if (displayName.trim() === "") {
+      setErrors((prevState) => ({
+        ...prevState,
+        displayName: "Name is required",
+      }));
+      hasError = true;
+    }
+
+    if (!validateEmail(email)) {
+      setErrors((prevState) => ({
+        ...prevState,
+        email: "Please enter a valid email address",
+      }));
+      hasError = true;
+    }
+
+    if (!validatePassword(password)) {
+      setErrors((prevState) => ({
+        ...prevState,
+        password:
+          "Password must be at least 6 characters and contain a number and a special character",
+      }));
+      hasError = true;
+    }
+
+    if (!validatePhotoUrl(photoUrl)) {
+      setErrors((prevState) => ({
+        ...prevState,
+        photoUrl: "Please enter a valid photo URL",
+      }));
+      hasError = true;
+    }
+
+    if (hasError) {
+      setLoading(false);
+      return;
+    }
+
     try {
-      await createUserFirebase(email, password, displayName, photoUrl);
+      await createUser(email, password, displayName, photoUrl);
       form.reset();
       setLoading(false);
-      // Account created successfully
+      toast.success("Account created successfully");
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
   };
 
   return (
@@ -45,7 +125,7 @@ const SignupPage = () => {
           ) : (
             ""
           )}
-          <form onSubmit={handelSignUp}>
+          <form onSubmit={handleSignUp}>
             <div className="mb-4">
               <label
                 className="block text-gray-700 font-semibold mb-2"
@@ -60,6 +140,9 @@ const SignupPage = () => {
                 id="displayName"
                 placeholder="Enter your name"
               />
+              {errors.displayName && (
+                <span className="text-red-500">{errors.displayName}</span>
+              )}
             </div>
             <div className="mb-4">
               <label
@@ -86,6 +169,9 @@ const SignupPage = () => {
                   placeholder="Enter your email address"
                 />
               </div>
+              {errors.email && (
+                <span className="text-red-500">{errors.email}</span>
+              )}
             </div>
             <div className="mb-4">
               <label
@@ -106,12 +192,28 @@ const SignupPage = () => {
                 </span>
                 <input
                   className="w-full p-3 pl-12 rounded border border-gray-400 focus:border-primary"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   id="password"
                   placeholder="Enter your password"
                 />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="absolute right-0 flex justify-center items-center h-full w-10 text-gray-400"
+                >
+                  <IconContext.Provider
+                    value={{
+                      className: "react-icon",
+                    }}
+                  >
+                    {showPassword ? <RiEyeCloseFill /> : <RiEyeFill />}
+                  </IconContext.Provider>
+                </button>
               </div>
+              {errors.password && (
+                <span className="text-red-500">{errors.password}</span>
+              )}
             </div>
             <div className="mb-4">
               <label
@@ -138,6 +240,9 @@ const SignupPage = () => {
                   placeholder="Add photo URL"
                 />
               </div>
+              {errors.photoUrl && (
+                <span className="text-red-500">{errors.photoUrl}</span>
+              )}
             </div>
             <button className="w-full py-3 rounded-md text-white bg-primary hover:bg-accent1">
               Sign Up
@@ -156,6 +261,7 @@ const SignupPage = () => {
           </form>
         </div>
       </div>
+      <ToastContainer />
       <Footer />
     </>
   );
