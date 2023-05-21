@@ -16,7 +16,6 @@ const HeaderSlider = () => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setSliderImages(data.results);
       });
   }, []);
