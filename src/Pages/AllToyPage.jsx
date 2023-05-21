@@ -81,23 +81,26 @@ const AllToyPage = () => {
               </tr>
             </thead>
             <tbody className="w-full">
-              {filteredToys?.map((toy) => (
-                <tr key={toy._id} className="text-center">
-                  <td className="py-2">{toy.seller}</td>
-                  <td className="py-2">{toy.name}</td>
-                  <td className="py-2">{toy.subCategory}</td>
-                  <td className="py-2">{toy.price}</td>
-                  <td className="py-2">{toy.quantity}</td>
-                  <td className="py-2">
-                    <button
-                      onClick={() => handleViewDetails(toy._id)}
-                      className="px-4 py-2 bg-blue-500 text-white rounded"
-                    >
-                      View Details
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {filteredToys?.map((toy) => {
+                console.log(toy);
+                return (
+                  <tr key={toy._id} className="text-center">
+                    <td className="py-2">{toy.seller}</td>
+                    <td className="py-2">{toy.toyName}</td>
+                    <td className="py-2">{toy.subCategory}</td>
+                    <td className="py-2">{toy.price}</td>
+                    <td className="py-2">{toy.quantity}</td>
+                    <td className="py-2">
+                      <button
+                        onClick={() => handleViewDetails(toy._id)}
+                        className="px-4 py-2 bg-blue-500 text-white rounded"
+                      >
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         ) : (

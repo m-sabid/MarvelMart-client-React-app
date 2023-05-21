@@ -10,7 +10,7 @@ import useDynamicTitle from "../components/shared/useDynamicTitle";
 
 const SignupPage = () => {
   useDynamicTitle("Signup");
-  const { createUser } = useContext(AuthContext);
+  const { createUserFirebase } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
 
   const handelSignUp = async (event) => {
@@ -23,7 +23,7 @@ const SignupPage = () => {
     const photoUrl = form.photoUrl.value;
 
     try {
-      await createUser(email, password, displayName, photoUrl);
+      await createUserFirebase(email, password, displayName, photoUrl);
       form.reset();
       setLoading(false);
       // Account created successfully

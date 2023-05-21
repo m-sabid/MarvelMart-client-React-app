@@ -1,15 +1,15 @@
 import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Footer from "../components/shared/Footer";
 import TopNav from "../components/shared/TopNav";
 import { AuthContext } from "../providers/AuthProvider";
 
 const AddToyPage = () => {
   const { user } = useContext(AuthContext);
-  console.log(user);
 
-  const navigate = useNavigate();
   const [toy, setToy] = useState({
     seller: user.displayName,
     toyName: "",
@@ -33,14 +33,25 @@ const AddToyPage = () => {
       const response = await axios.post("http://localhost:5000/api/toys", toy);
       const newToy = response.data.toy;
       console.log("Toy added successfully:", newToy);
-      navigate(`/toys/${newToy._id}`);
+      toast.success("Toy added successfully");
+      setToy({
+        ...toy,
+        toyName: "",
+        subCategory: "",
+        price: "",
+        quantity: "",
+        descriptions: "",
+        photoURL: "",
+      });
     } catch (error) {
       console.error("Error adding toy:", error);
+      toast.error("Error adding toy");
     }
   };
 
   return (
     <div className="bg-gray-100">
+      <ToastContainer />
       <TopNav />
 
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -56,9 +67,7 @@ const AddToyPage = () => {
               id="seller"
               name="seller"
               value={toy.seller}
-              onChange={handleInputChange}
-              placeholder="Enter seller name"
-              required
+              readOnly
               className="border border-gray-300 rounded px-4 py-2 w-full"
             />
           </div>
@@ -70,11 +79,9 @@ const AddToyPage = () => {
             <input
               type="email"
               id="email"
-              name="email"
-              value={toy.email}
-              onChange={handleInputChange}
-              placeholder="Enter email"
-              required
+              name="sellerEmail"
+              value={toy.sellerEmail}
+              readOnly
               className="border border-gray-300 rounded px-4 py-2 w-full"
             />
           </div>
@@ -86,8 +93,8 @@ const AddToyPage = () => {
             <input
               type="text"
               id="name"
-              name="name"
-              value={toy.name}
+              name="toyName"
+              value={toy.toyName}
               onChange={handleInputChange}
               placeholder="Enter toy name"
               required

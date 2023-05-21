@@ -6,7 +6,7 @@ import { Link, Navigate } from "react-router-dom";
 const TopNav = () => {
   const { user, logout } = useContext(AuthContext);
 
-  const handelLogout = () => {
+  const handleLogout = () => {
     logout()
       .then(() => {
         Navigate("/login");
@@ -16,7 +16,7 @@ const TopNav = () => {
 
   return (
     <div className="navbar bg-primary text-white relative">
-      <div className="navbar-start ">
+      <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
             <svg
@@ -39,19 +39,23 @@ const TopNav = () => {
             className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-primary rounded-box w-52"
           >
             <li>
-              <Link>Home</Link>
+              <Link to={"/"}>Home</Link>
             </li>
             <li>
-              <Link>All Toys</Link>
+              <Link to={"/all-toys"}>All Toys</Link>
             </li>
+            {user && (
+              <React.Fragment>
+                <li>
+                  <Link to={"/my-toys"}>My Toys</Link>
+                </li>
+                <li>
+                  <Link to={"/add-toy"}>Add A Toy</Link>
+                </li>
+              </React.Fragment>
+            )}
             <li>
-              <Link>My Toys</Link>
-            </li>
-            <li>
-              <Link>Add A Toy</Link>
-            </li>
-            <li>
-              <Link>Blogs</Link>
+              <Link to={"/blog"}>Blogs</Link>
             </li>
             <li>
               {user && (
@@ -75,7 +79,7 @@ const TopNav = () => {
             </li>
             <li>
               {user ? (
-                <button onClick={handelLogout}>
+                <button onClick={handleLogout}>
                   <Link
                     to={"/"}
                     className="text-orange-500 bg-white p-2 rounded font-bold hover:bg-orange-200 hover:text-black"
@@ -101,7 +105,7 @@ const TopNav = () => {
           <img
             src="https://i.ibb.co/HGrY9hN/321563816-2370449856443123-4609861830021339838-n-removebg-preview.png"
             alt="Marvel Logo"
-            className="h-16 "
+            className="h-16"
           />
           MarvelMart
         </Link>
@@ -115,12 +119,16 @@ const TopNav = () => {
           <li>
             <Link to={"/all-toys"}>All Toys</Link>
           </li>
-          <li>
-            <Link to={"/my-toys"}>My Toys</Link>
-          </li>
-          <li>
-            <Link to={"/add-toy"}>Add A Toy</Link>
-          </li>
+          {user && (
+            <React.Fragment>
+              <li>
+                <Link to={"/my-toys"}>My Toys</Link>
+              </li>
+              <li>
+                <Link to={"/add-toy"}>Add A Toy</Link>
+              </li>
+            </React.Fragment>
+          )}
           <li>
             <Link to={"/blog"}>Blogs</Link>
           </li>
@@ -142,7 +150,7 @@ const TopNav = () => {
           </li>
           <li>
             {user ? (
-              <button onClick={handelLogout}>
+              <button onClick={handleLogout}>
                 <Link
                   to={"/"}
                   className="text-orange-500 bg-white p-2 rounded font-bold hover:bg-orange-200 hover:text-black"
