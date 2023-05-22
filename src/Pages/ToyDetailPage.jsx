@@ -15,7 +15,7 @@ const ToyDetailPage = () => {
     // Fetch toy data based on the provided ID
     const fetchToyData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/toys/${toyId}`);
+        const response = await fetch(`https://marvel-mart-m-sabid.vercel.app/api/toys/${toyId}`);
         const data = await response.json();
         setToy(data);
       } catch (error) {

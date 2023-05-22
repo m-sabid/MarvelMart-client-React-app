@@ -16,7 +16,7 @@ const AllToyPage = () => {
   useEffect(() => {
     const fetchToys = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/toys");
+        const response = await fetch("https://marvel-mart-m-sabid.vercel.app/api/toys");
         const data = await response.json();
         setToys(data.toys);
         setIsLoading(false);

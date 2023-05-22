@@ -23,7 +23,7 @@ const MyToysPage = () => {
     const fetchToys = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/my-toys?email=${user.email}`
+          `https://marvel-mart-m-sabid.vercel.app/api/my-toys?email=${user.email}`
         );
         setToys(response.data.toys);
         setIsLoading(false);
@@ -43,7 +43,7 @@ const MyToysPage = () => {
 
   const confirmDelete = () => {
     axios
-      .delete(`http://localhost:5000/api/toys/${toyToDelete}`)
+      .delete(`https://marvel-mart-m-sabid.vercel.app/api/toys/${toyToDelete}`)
       .then(() => {
         const remaining = toys.filter((toy) => toy._id !== toyToDelete);
         setToys(remaining);
@@ -83,7 +83,7 @@ const MyToysPage = () => {
 
     try {
       await axios.patch(
-        `http://localhost:5000/api/toys/${updateToyId}`,
+        `https://marvel-mart-m-sabid.vercel.app/api/toys/${updateToyId}`,
         updatedToy
       );
 

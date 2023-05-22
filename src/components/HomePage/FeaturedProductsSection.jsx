@@ -12,7 +12,7 @@ const FeaturedProductsSection = () => {
 
   const fetchFeaturedProducts = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/featured-products");
+      const response = await fetch("https://marvel-mart-m-sabid.vercel.app/api/featured-products");
       const data = await response.json();
       setFeaturedProducts(data.featuredToys.slice(0, 3));
     } catch (error) {

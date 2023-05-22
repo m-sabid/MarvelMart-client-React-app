@@ -8,7 +8,7 @@ const ShopByCategory = () => {
   const [filteredToys, setFilteredToys] = useState([]);
   const [category, setCategory] = useState("Action Figures");
 
-  const url = "http://localhost:5000/api/toys";
+  const url = "https://marvel-mart-m-sabid.vercel.app/api/toys";
 
   useEffect(() => {
     axios

@@ -35,7 +35,7 @@ const AddToyPage = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:5000/api/toys", toy);
+      const response = await axios.post("https://marvel-mart-m-sabid.vercel.app/api/toys", toy);
       const newToy = response.data.toy;
       console.log("Toy added successfully:", newToy);
       toast.success("Toy added successfully");
