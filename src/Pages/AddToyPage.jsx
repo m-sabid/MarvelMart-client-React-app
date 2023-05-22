@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import ReactStars from "react-rating-stars-component";
 import Footer from "../components/shared/Footer";
 import TopNav from "../components/shared/TopNav";
 import { AuthContext } from "../providers/AuthProvider";
@@ -19,11 +19,16 @@ const AddToyPage = () => {
     descriptions: "",
     photoURL: "",
     sellerEmail: user.email,
+    rating: 0,
   });
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setToy((prevToy) => ({ ...prevToy, [name]: value }));
+  };
+
+  const handleRatingChange = (newRating) => {
+    setToy((prevToy) => ({ ...prevToy, rating: newRating }));
   };
 
   const handleSubmit = async (event) => {
@@ -172,6 +177,20 @@ const AddToyPage = () => {
               required
               className="border border-gray-300 rounded px-4 py-2 w-full"
             ></textarea>
+          </div>
+
+          <div>
+            <label htmlFor="rating" className="block font-medium text-gray-700">
+              Rating
+            </label>
+            <ReactStars
+              count={5}
+              size={24}
+              value={toy.rating}
+              onChange={handleRatingChange}
+              activeColor="#ffd700"
+              classNames="mt-2"
+            />
           </div>
 
           <div>
