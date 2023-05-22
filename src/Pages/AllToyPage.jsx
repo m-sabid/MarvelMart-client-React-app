@@ -69,8 +69,8 @@ const AllToyPage = () => {
         />
 
         {!isLoading ? (
-          <table className="min-w-full">
-            <thead>
+          <table className="min-w-full border-2">
+            <thead className="border-b-2">
               <tr>
                 <th className="py-2">Seller</th>
                 <th className="py-2">Toy Name</th>
@@ -84,7 +84,7 @@ const AllToyPage = () => {
               {filteredToys?.map((toy) => {
                 console.log(toy);
                 return (
-                  <tr key={toy._id} className="text-center">
+                  <tr key={toy._id} className="text-center border-b-2">
                     <td className="py-2">{toy.seller}</td>
                     <td className="py-2">{toy.toyName}</td>
                     <td className="py-2">{toy.subCategory}</td>
