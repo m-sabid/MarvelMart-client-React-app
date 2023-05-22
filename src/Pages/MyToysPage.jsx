@@ -133,13 +133,10 @@ const MyToysPage = () => {
                 <th className="px-4 py-2 border-b">Toy Name</th>
                 <th className="px-4 py-2 border-b">
                   <div className="flex items-center">
-                    <button
-                      className="text-blue-500 underline mr-1"
-                      onClick={handleSort}
-                    >
+                    <button className="mr-1 flex items-center gap-2" onClick={handleSort}>
                       Price
+                      <BsFilter className="text-gray-500" />
                     </button>
-                    <BsFilter className="text-gray-500" />
                   </div>
                 </th>
                 <th className="px-4 py-2 border-b">Quantity</th>
