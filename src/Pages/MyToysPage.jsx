@@ -4,6 +4,7 @@ import TopNav from "../components/shared/TopNav";
 import Footer from "../components/shared/Footer";
 import { AuthContext } from "../providers/AuthProvider";
 import { toast, ToastContainer } from "react-toastify";
+import { BsFilter } from "react-icons/bs";
 
 const MyToysPage = () => {
   const { user } = useContext(AuthContext);
@@ -16,6 +17,7 @@ const MyToysPage = () => {
   const [updatePrice, setUpdatePrice] = useState("");
   const [updateDescriptions, setUpdateDescriptions] = useState("");
   const [updateAvailableQuantity, setUpdateAvailableQuantity] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc"); // Default sort order is ascending
 
   useEffect(() => {
     const fetchToys = async () => {
@@ -70,10 +72,6 @@ const MyToysPage = () => {
     setIsUpdateModalOpen(true);
   };
 
-  //  Handel Update
-  // ...
-
-  // Handel Update
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
 
@@ -89,7 +87,6 @@ const MyToysPage = () => {
         updatedToy
       );
 
-      // Update the toys state with the updated toy
       setToys((prevToys) =>
         prevToys.map((toy) =>
           toy._id === updateToyId ? { ...toy, ...updatedToy } : toy
@@ -102,6 +99,19 @@ const MyToysPage = () => {
       console.error("Error updating toy:", error);
       setIsUpdateModalOpen(false);
     }
+  };
+
+  const handleSort = () => {
+    const sortedToys = [...toys].sort((a, b) => {
+      if (sortOrder === "asc") {
+        return a.price - b.price;
+      } else {
+        return b.price - a.price;
+      }
+    });
+
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    setToys(sortedToys);
   };
 
   return (
@@ -121,7 +131,17 @@ const MyToysPage = () => {
               <tr>
                 <th className="px-4 py-2 border-b">Seller</th>
                 <th className="px-4 py-2 border-b">Toy Name</th>
-                <th className="px-4 py-2 border-b">Price</th>
+                <th className="px-4 py-2 border-b">
+                  <div className="flex items-center">
+                    <button
+                      className="text-blue-500 underline mr-1"
+                      onClick={handleSort}
+                    >
+                      Price
+                    </button>
+                    <BsFilter className="text-gray-500" />
+                  </div>
+                </th>
                 <th className="px-4 py-2 border-b">Quantity</th>
                 <th className="px-4 py-2 border-b">Description</th>
                 <th className="px-4 py-2 border-b">Actions</th>

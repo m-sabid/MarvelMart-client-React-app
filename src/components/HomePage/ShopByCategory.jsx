@@ -32,7 +32,7 @@ const ShopByCategory = () => {
 
   return (
     <Tabs>
-      <TabList className="flex justify-center bg-gray-200 py-4">
+      <TabList className="flex flex-wrap justify-center bg-gray-200 py-4">
         <Tab
           className={`cursor-pointer px-4 py-2 m-2 rounded-lg bg-white shadow-md ${
             category === "Action Figures" ? "bg-blue-200" : ""
@@ -60,21 +60,21 @@ const ShopByCategory = () => {
       </TabList>
 
       <TabPanel>
-        <div className="grid grid-cols-3 gap-4 p-4 justify-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-4 justify-center">
           {filteredToys?.map((toy) => (
             <ToyCard key={toy._id} toy={toy} />
           ))}
         </div>
       </TabPanel>
       <TabPanel>
-        <div className="grid grid-cols-3 gap-4 p-4 justify-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-4 justify-center">
           {filteredToys?.map((toy) => (
             <ToyCard key={toy._id} toy={toy} />
           ))}
         </div>
       </TabPanel>
       <TabPanel>
-        <div className="grid grid-cols-3 gap-4 p-4 justify-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-4 justify-center">
           {filteredToys?.map((toy) => (
             <ToyCard key={toy._id} toy={toy} />
           ))}

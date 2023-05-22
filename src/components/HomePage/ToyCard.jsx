@@ -10,7 +10,7 @@ const ToyCard = ({ toy }) => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
 
-  const handleViewDetails = (toyId) => {
+   const handleViewDetails = (toyId) => {
     // Check if the user is logged in
     const isLoggedIn = true; // Replace with your actual logic to check if the user is logged in
 
@@ -22,11 +22,11 @@ const ToyCard = ({ toy }) => {
       navigate("/login");
     }
   };
+
   const closeModal = () => {
     setShowModal(false);
     navigate("/login");
   };
-
 
   return (
     <div className="card bg-base-200 shadow-xl grid grid-cols-2">

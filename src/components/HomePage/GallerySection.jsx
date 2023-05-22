@@ -16,7 +16,6 @@ const GallerySection = () => {
         const formattedImages = data.map((image) => ({
           src: image.urls.regular,
           thumbnail: image.urls.thumb,
-          
         }));
         setImages(formattedImages);
       })
@@ -26,7 +25,7 @@ const GallerySection = () => {
   }, []);
 
   return (
-    <div className="my-16">
+    <div className="my-8 sm:my-16">
       <h1 className="text-2xl text-center font-bold mb-4">Image Gallery</h1>
       <div className="border rounded-lg shadow-lg">
         <Gallery
