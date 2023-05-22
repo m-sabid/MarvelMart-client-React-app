@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { FaHeart, FaShareAlt } from "react-icons/fa";
+import Spinner from "../components/shared/Spinner";
 import TopNav from "../components/shared/TopNav";
 import Footer from "../components/shared/Footer";
-import { useParams } from "react-router-dom";
 
 const ToyDetailPage = () => {
   const [toy, setToy] = useState(null);
   const { toyId } = useParams();
+
+  console.log(toyId);
 
   useEffect(() => {
     // Fetch toy data based on the provided ID
@@ -23,10 +27,27 @@ const ToyDetailPage = () => {
   }, [toyId]);
 
   if (!toy) {
-    return <div>Loading...</div>; // Show a loading state while data is being fetched
+    return (
+      <div>
+        <Spinner />{" "}
+      </div>
+    ); // Show a loading state while data is being fetched
   }
 
-  const { toyName, description, category, price } = toy;
+  const {
+    toyName,
+    descriptions,
+    sellerEmail,
+    seller,
+    quantity,
+    price,
+    photoURL,
+  } = toy.toy;
+
+  console.log(toy);
+
+  // Hardcoded rating for demonstration
+  const rating = 4.5;
 
   return (
     <div>
@@ -35,23 +56,44 @@ const ToyDetailPage = () => {
       <div className="bg-neutral2 min-h-screen p-8">
         <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
           <div className="p-8">
+            <div className="mb-4">
+              <img
+                src={photoURL}
+                alt={toyName}
+                className="w-full h-80 object-cover"
+              />
+            </div>
             <h1 className="text-3xl font-bold mb-4">{toyName}</h1>
-            <p className="text-neutral1 mb-4">{description}</p>
             <div className="flex items-center mb-4">
-              <span className="text-neutral1 mr-2">Category:</span>
-              <span className="text-accent1">{category}</span>
+              <span className="text-neutral1 mr-2">Seller:</span>
+              <span className="text-primary">{seller}</span>
+            </div>
+            <div className="flex items-center mb-4">
+              <span className="text-neutral1 mr-2">Seller Email:</span>
+              <span className="text-primary">{sellerEmail}</span>
             </div>
             <div className="flex items-center mb-4">
               <span className="text-neutral1 mr-2">Price:</span>
-              <span className="text-accent1">${price}</span>
+              <span className="text-primary">${price}</span>
             </div>
+            <div className="flex items-center mb-4">
+              <span className="text-neutral1 mr-2">Rating:</span>
+              <span className="text-primary">{rating}</span>
+            </div>
+            <div className="flex items-center mb-4">
+              <span className="text-neutral1 mr-2">Available Quantity:</span>
+              <span className="text-primary">{quantity}</span>
+            </div>
+            <p className="text-neutral1 mb-4">{descriptions}</p>
             <div className="flex justify-between">
-              <button className="bg-primary text-white py-2 px-4 rounded hover:bg-custom-primary">
-                Add to Cart
-              </button>
-              <button className="bg-accent1 text-white py-2 px-4 rounded hover:bg-custom-accent1">
-                Buy Now
-              </button>
+              <div className="flex items-center">
+                <button className="text-primary mr-2">
+                  <FaHeart className="text-xl" />
+                </button>
+                <button className="text-primary">
+                  <FaShareAlt className="text-xl" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
